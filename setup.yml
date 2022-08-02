@@ -4,3 +4,8 @@
   vars_files: main.yml
   roles:
     - { role: generate-resources }
+- name: Install and Configure Gluster
+  hosts: ocne-worker
+  vars_files: main.yml
+  roles:
+    - { role: install-configure-gluster }

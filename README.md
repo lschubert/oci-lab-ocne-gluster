@@ -11,4 +11,13 @@ This automation is best executed within the Luna Lab environment using Visual St
     - verify with ```git version```and ```ansible --version```
 
 
+# Developer ToDo's:
+kubectl get no -ocustom-columns=Name:metadata.name,Status:status.conditions[-1].type
+must be all nodes ready
+Example:
 
+Name             Status
+ocne-control01   Ready
+ocne-worker01    Ready
+ocne-worker02    Ready
+ocne-worker03    Ready

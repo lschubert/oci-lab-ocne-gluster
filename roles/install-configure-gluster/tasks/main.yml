@@ -27,8 +27,8 @@
   become: true  
 - name: Enable gluster encryption
   copy:
-    src:
-    dest:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     remote_src: true 
   become: true
   loop:

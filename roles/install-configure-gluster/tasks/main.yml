@@ -9,7 +9,7 @@
     name: "glusterfs-server,glusterfs-client"
     state: latest
   become: true
-- name: Configure the firewall -add-source 
+- name: Configure the firewall - add-source 
   firewalld:
     source: 10.0.0.0/24
     zone: trusted
@@ -17,7 +17,7 @@
     immediate: yes
     state: enabled
   become: true
-- name: Configure the firewall -add-service 
+- name: Configure the firewall - add-service 
   firewalld:
     service: glusterfs
     zone: trusted

@@ -1,0 +1,46 @@
+---
+- name: Install the Gluster yum repository configuration
+  dnf:
+    name: oracle-gluster-release-el8
+    state: latest
+  become: true
+- name: Install the Heketi software.
+  dnf:
+    name: "heketi,heketi-client"
+    state: latest
+  become: true
+- name: Configure the firewall - add-source 
+  firewalld:
+    source: 10.0.0.0/24
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true
+- name: Configure the firewall - add-port
+  firewalld:
+    port: 8080/tcp
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true
+- name: Create the SSH authentication key for Heketi
+  shell: |
+    ssh-keygen -m PEM -t rsa -b 4096 -q -f /etc/heketi/heketi_key -N ''
+    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker01 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
+    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker02 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
+    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker03 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
+    chown heketi:heketi /etc/heketi/heketi_key*
+  become: true
+- name: Backup heketi.json
+  copy:
+    src: /etc/heketi/heketi.json 
+    dest: /etc/heketi/heketi.json.bak_{{ ansible_date_time.epoch}}
+    remote_src: yes
+  become: true
+- name: Enable Heketi authentication
+  lineinfile:
+    path: /etc/heketi/heketi.json
+    regexp: 'use_auth'
+    line: "use_auth: true"

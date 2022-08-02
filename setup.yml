@@ -9,3 +9,8 @@
   vars_files: main.yml
   roles:
     - { role: install-configure-gluster }
+- name: Configure Heketi for Gluster
+  hosts: ocne-control
+  vars_files: main.yml
+  roles:
+    - { role: configure-heketi }

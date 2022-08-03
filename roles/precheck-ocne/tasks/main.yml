@@ -1,0 +1,12 @@
+---
+name: Make sure ocne cluster is Ready ({{ item }})
+shell: |
+  "kubectl get node --no-headers {{ item }} -ocustom-columns=Name:metadata.name,Status:status.conditions[-1].type"
+delay: 10
+retries: 20
+until: "'Ready' in item.stdout"
+loop:
+  - ocne-control01
+  - ocne-worker01
+  - ocne-worker02
+  - ocne-worker03

@@ -4,6 +4,11 @@
   vars_files: main.yml
   roles:
     - { role: generate-resources }
+- name: Validate ocne setup
+  hosts: ocne-control
+  vars_files: main.yml
+  roles:
+    - { role: precheck-ocne }
 - name: Install and Configure Gluster
   hosts: ocne-worker
   vars_files: main.yml

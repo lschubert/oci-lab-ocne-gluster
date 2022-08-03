@@ -24,3 +24,8 @@
   vars_files: main.yml
   roles:
     - { role: install-gluster-csi }
+- name: Create Gluster Volumes
+  hosts: ocne-control
+  vars_files: main.yml
+  roles:
+    - { role: create-gluster-volumes }

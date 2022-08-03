@@ -62,7 +62,7 @@
           - name: demo-nginx-pvc
             persistentVolumeClaim:
               claimName: gluster-pvc-1
-      EOF
+    EOF
   become: true
   become_user: "{{ install_user }}"
   register: deployment_create

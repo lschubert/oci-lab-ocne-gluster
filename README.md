@@ -43,12 +43,5 @@ This automation is best executed within the Luna Lab environment using Visual St
 1. Each worker node has an additional 50GB Block device attached for Gluster setup
 
 # Developer ToDo's:
-kubectl get no -ocustom-columns=Name:metadata.name,Status:status.conditions[-1].type
-must be all nodes ready
-Example:
-
-Name             Status
-ocne-control01   Ready
-ocne-worker01    Ready
-ocne-worker02    Ready
-ocne-worker03    Ready
+TASK [create-gluster-volumes : Create PVCs] ******************************************************************************
+fatal: [130.61.62.158]: FAILED! => {"changed": true, "cmd": "for x in {0..5}; do\ncat << EOF | kubectl apply -f -\napiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: gluster-pvc-${x}\nspec:\n  accessModes:\n  - ReadWriteMany\nresources:\n  requests:\n    storage: 1Gi\nEOF\ndone\n", "delta": "0:00:00.211695", "end": "2022-08-03 17:23:50.602418", "msg": "non-zero return code", "rc": 1, "start": "2022-08-03 17:23:50.390723", "stderr": "error: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)", "stderr_lines": ["error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)"], "stdout": "", "stdout_lines": []}

@@ -9,10 +9,10 @@
       name: gluster-pvc-${x}
     spec:
       accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: 1Gi
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 1Gi
     EOF
     done
   become: true

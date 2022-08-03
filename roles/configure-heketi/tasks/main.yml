@@ -33,6 +33,11 @@
     cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker03 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
     chown heketi:heketi /etc/heketi/heketi_key*
   become: true
+  register: ssh_out
+- name: DEBUG
+  debug:
+    var: ssh_out
+  when: debug_output == true  
 - name: Backup heketi.json
   copy:
     src: /etc/heketi/heketi.json 

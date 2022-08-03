@@ -19,7 +19,7 @@
   become: true
 - name: Configure the firewall - add-service 
   firewalld:
-    service: glusterfs
+    service: glusterd
     zone: trusted
     permanent: yes
     immediate: yes

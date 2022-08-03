@@ -27,6 +27,14 @@ This automation is best executed within the Luna Lab environment using Visual St
     3.1. Select "Terminal > New Terminal"
     
         Hint: Minimize Browser window with Luna Lab
+    
+    3.2. Set Environment variables
+    
+    HEKETI_ADMIN_PASS is used to manage the Heketi Topology for Gluster
+    ```
+    export HEKETI_ADMIN_PASS=<password>
+    export HEKETI_USER_PASS=<password>
+    ```
 
 # About this Luna Lab environment
 

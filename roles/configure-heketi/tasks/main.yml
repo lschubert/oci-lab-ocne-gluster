@@ -92,7 +92,7 @@
   when: debug_output == true
 - name: Load Heketi topology
   shell: |
-    heketi-cli --user admin --secret "{{ HEKETI_ADMIN_PASS }}" admin node list
+    heketi-cli --user admin --secret "{{ HEKETI_ADMIN_PASS }}" node list
   become_user: "{{ install_user }}"
   register: heketi_nodes
 - name: Show Heketi nodes

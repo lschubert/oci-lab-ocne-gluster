@@ -10,7 +10,5 @@ ocne_worker_ip:
 install_user: oracle
 # oci_executor: true: execute ansible playbook from oci lab environment; false: execute from anywhere according to README.md instructions
 oci_executor: true
-# ol_update: true: run "dnf update"
-ol_update: false
 # debug_output: true enables some debug output during setup
 debug_output: true

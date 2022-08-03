@@ -35,14 +35,24 @@
     ssh-keygen -m PEM -t rsa -b 4096 -q -f /etc/heketi/heketi_key -N '' <<<$'n\n'
   when: not stat_result.stat.exists
   become: true
-- name: Distribute SSH authentication key for Hesketi
+- name: Distribute SSH authentication key for Heketi
   shell: |
-    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker01 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
-    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker02 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
-    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker03 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
-    chown heketi:heketi /etc/heketi/heketi_key*
-  become: true
+    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no {{ item }} 'sudo tee -a /root/.ssh/authorized_keys' > /dev/null 2>&1
   register: ssh_out
+  become: true
+  become_user: "{{ install_user }}"
+  loop:
+    - ocne-worker01
+    - ocne-worker02
+    - ocne-worker03
+- name: Set Key permissions
+  file: 
+    path: "{{ item }}"
+    owner: heketi
+    group: heketi
+  loop:
+    - /etc/heketi/heketi_key
+    - /etc/heketi/heketi_key.pub
 - name: DEBUG
   debug:
     var: ssh_out

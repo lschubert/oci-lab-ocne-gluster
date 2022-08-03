@@ -36,7 +36,7 @@ This automation is best executed within the Luna Lab environment using Visual St
     export HEKETI_USER_PASS=<password>
     ```
 
-    3.3. In oci-lab-ocne folder execute ```./setup.sh```
+    3.3. In oci-lab-ocne-gluster folder execute ```./setup.sh```
 
 # About this Luna Lab environment
 

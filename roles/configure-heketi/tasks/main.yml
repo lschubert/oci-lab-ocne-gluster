@@ -50,6 +50,7 @@
     path: "{{ item }}"
     owner: heketi
     group: heketi
+  become: true
   loop:
     - /etc/heketi/heketi_key
     - /etc/heketi/heketi_key.pub

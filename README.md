@@ -45,5 +45,30 @@ This automation is best executed within the Luna Lab environment using Visual St
 1. Each worker node has an additional 50GB Block device attached for Gluster setup
 
 # Developer ToDo's:
-TASK [create-gluster-volumes : Create PVCs] ******************************************************************************
-fatal: [130.61.62.158]: FAILED! => {"changed": true, "cmd": "for x in {0..5}; do\ncat << EOF | kubectl apply -f -\napiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: gluster-pvc-${x}\nspec:\n  accessModes:\n  - ReadWriteMany\nresources:\n  requests:\n    storage: 1Gi\nEOF\ndone\n", "delta": "0:00:00.211695", "end": "2022-08-03 17:23:50.602418", "msg": "non-zero return code", "rc": 1, "start": "2022-08-03 17:23:50.390723", "stderr": "error: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)\nerror: You must be logged in to the server (the server has asked for the client to provide credentials)", "stderr_lines": ["error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)", "error: You must be logged in to the server (the server has asked for the client to provide credentials)"], "stdout": "", "stdout_lines": []}
+
+[oracle@ocne-control01 ~]$ kubectl get pvc -owide
+NAME            STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS     AGE   VOLUMEMODE
+gluster-pvc-0   Pending                                      hyperconverged   12m   Filesystem
+gluster-pvc-1   Pending                                      hyperconverged   12m   Filesystem
+gluster-pvc-2   Pending                                      hyperconverged   12m   Filesystem
+gluster-pvc-3   Pending                                      hyperconverged   12m   Filesystem
+gluster-pvc-4   Pending                                      hyperconverged   12m   Filesystem
+gluster-pvc-5   Pending                                      hyperconverged   12m   Filesystem
+[oracle@ocne-control01 ~]$ kubectl describe pvc gluster-pvc-0 
+Name:          gluster-pvc-0
+Namespace:     default
+StorageClass:  hyperconverged
+Status:        Pending
+Volume:        
+Labels:        <none>
+Annotations:   volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/glusterfs
+               volume.kubernetes.io/storage-provisioner: kubernetes.io/glusterfs
+Finalizers:    [kubernetes.io/pvc-protection]
+Capacity:      
+Access Modes:  
+VolumeMode:    Filesystem
+Used By:       <none>
+Events:
+  Type     Reason              Age                 From                         Message
+  ----     ------              ----                ----                         -------
+  Warning  ProvisioningFailed  89s (x12 over 12m)  persistentvolume-controller  Failed to provision volume with StorageClass "hyperconverged": failed to create volume: failed to create volume: see kube-controller-manager.log for details

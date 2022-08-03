@@ -43,5 +43,15 @@
   lineinfile:
     path: /etc/heketi/heketi.json
     regexp: 'use_auth'
-    line: "use_auth: true"
+    line: '  "use_auth": true,'
+  become: true
+- name: Set HEKETI_ADMIN_PASS
+  shell: |
+    json="$(jq --arg HEKETI_ADMIN_PASS "${HEKETI_ADMIN_PASS}" '.jwt.admin.key = $HEKETI_ADMIN_PASS' /etc/heketi/heketi.json)" && \
+    echo -E "${json}" > /etc/heketi/heketi.json
+  become: true
+- name: Set HEKETI_USER_PASS
+  shell: |
+    json="$(jq --arg HEKETI_USER_PASS "${HEKETI_USER_PASS}" '.jwt.user.key = $HEKETI_USER_PASS' /etc/heketi/heketi.json)" && \
+    echo -E "${json}" > /etc/heketi/heketi.json
   become: true

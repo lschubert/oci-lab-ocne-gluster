@@ -15,6 +15,7 @@
         storage: 1Gi
     EOF
     done
+  become: true
   become_user: "{{ install_user }}"
   register: pvc_create
 - name: DEBUG
@@ -24,6 +25,7 @@
 - name: Check PVCs
   shell: |
     kubectl get pvc
+  become: true
   become_user: "{{ install_user }}"
   register: pvc_get
 - name: Show PVCs
@@ -61,6 +63,7 @@
             persistentVolumeClaim:
               claimName: gluster-pvc-1
       EOF
+  become: true
   become_user: "{{ install_user }}"
   register: deployment_create
 - name: DEBUG
@@ -70,6 +73,7 @@
 - name: Check Deployment
   shell: |
     kubectl get pod -l run=demo-nginx
+  become: true
   become_user: "{{ install_user }}"
   register: deployment_get
 - name: Show Deployment

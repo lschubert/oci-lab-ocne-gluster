@@ -14,7 +14,7 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 1. Launch Lab
 
-    1.1. In Lab Environment click on "Luna Lab" ... wait until Resources are provisioned. Click "Resources" Tab to gather IP addresses for ocne-operator, ocne-control and ocne-worker nodes
+    1.1. In Lab Environment click on "Luna Lab" ... wait until Resources are provisioned. Click "Resources" Tab to gather IP addresses for ocne-operator, ocne-control01, ocne-worker01, ocne-worker02 and ocne-worker03 nodes
 
 2. Checkout this git repo in Luna Lab Visual Studio Code
 
@@ -24,11 +24,13 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 3. In Lab Environement Visual Studio Code
 
-    3.1. Select "Terminal > New Terminal"
+    3.1. Open file ```vars/main.yml``` in Visual Studio Code and modify the values for ```ocne_control_ip```, ```ocne_operator_ip``` and ```ocne_worker_ip``` to match the corresponsing IPs from step 1.1
+
+    3.2. Make sure "oci_executor" variable in ```vars/main.yml``` is set to true 
+
+    3.3. Select "Terminal > New Terminal"
     
-        Hint: Minimize Browser window with Luna Lab
-    
-    3.2. Set Environment variables
+    3.4. Set Environment variables
 
     HEKETI_ADMIN_PASS is used to manage the Heketi Topology for Gluster
     ```

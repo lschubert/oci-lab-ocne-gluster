@@ -1,0 +1,11 @@
+---
+- name: Backup environment config
+  copy:
+    src: ~/myenvironment.yaml
+    dest: "~/myenvironment.yaml_{{ ansible_date_time.epoch}}"
+  become_user: "{{ install_user }}"
+- name: Add Helm and Gluster module to environment config
+  template:
+    src: templates/myenvironment_gluster-csi.j2
+    dest: ~/myenvironment.yaml
+  become_user: "{{ install_user }}"

@@ -19,3 +19,8 @@
   vars_files: main.yml
   roles:
     - { role: configure-heketi }
+- name: Install the Gluster Container Storage Interface Module
+  hosts: ocne-operator
+  vars_files: main.yml
+  roles:
+    - { role: install-gluster-csi }

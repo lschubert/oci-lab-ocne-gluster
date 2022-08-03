@@ -25,9 +25,18 @@
     immediate: yes
     state: enabled
   become: true
+- name: Check if SSH authentication key for Heketi exists
+  stat:
+    path: /etc/heketi/heketi_key
+  register: stat_result
+  become: true
 - name: Create the SSH authentication key for Heketi
   shell: |
     ssh-keygen -m PEM -t rsa -b 4096 -q -f /etc/heketi/heketi_key -N '' <<<$'n\n'
+  when: not stat_result.stat.exists
+  become: true
+- name: Distribute SSH authentication key for Hesketi
+  shell: |
     cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker01 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
     cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker02 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1
     cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no ocne-worker03 "sudo tee -a /root/.ssh/authorized_keys" > /dev/null 2>&1

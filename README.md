@@ -10,6 +10,21 @@ This automation is best executed within the Luna Lab environment using Visual St
 - git client, ansible installed
     - verify with ```git version```and ```ansible --version```
 
+# Instructions to setup
+
+1. Launch Lab
+
+    1.1. In Lab Environment click on "Luna Lab" ... wait until Resources are provisioned. Click "Resources" Tab to gather IP addresses for ocne-operator, ocne-control and ocne-worker nodes
+
+2. Checkout this git repo in Luna Lab Visual Studio Code
+
+    2.1 Open Visual Studio Code. Select Topmost left Icon ("Explorer") and press "Clone Repository" button.
+    Provide github URL: https://github.com/lschubert/oci-lab-ocne-gluster.git
+    Select "Open Folder" and choose the local path of cloned repo
+
+# About this Luna Lab environment
+
+1. Each worker node has an additional 50GB Block device attached for Gluster setup
 
 # Developer ToDo's:
 kubectl get no -ocustom-columns=Name:metadata.name,Status:status.conditions[-1].type

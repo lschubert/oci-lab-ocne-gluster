@@ -1,12 +1,22 @@
 ---
-name: Make sure ocne cluster is Ready ({{ item }})
-shell: |
-  "kubectl get node --no-headers {{ item }} -ocustom-columns=Name:metadata.name,Status:status.conditions[-1].type"
-delay: 10
-retries: 20
-until: "'Ready' in item.stdout"
-loop:
-  - ocne-control01
-  - ocne-worker01
-  - ocne-worker02
-  - ocne-worker03
+- name: Make sure ocne cluster is Ready
+  shell: |
+    kubectl get node "{{ item }}" --no-headers -ocustom-columns=Name:metadata.name,Status:status.conditions[-1].type
+  register: cmd_out
+  become: true
+  become_user: "{{ install_user }}"
+  with_items:
+    - ocne-control01
+    - ocne-worker01
+    - ocne-worker02
+    - ocne-worker03
+- name: DEBUG
+  debug:
+    msg: "{{ cmd_out.results }}"
+  when: debug_output == true
+- name: DEBUG
+  debug:
+    msg: "{{ item }}"
+  failed_when: "'Ready' not in item"
+  with_items: "{{ cmd_out.results|map(attribute='stdout_lines')|list }}"
+  when: debug_output == true

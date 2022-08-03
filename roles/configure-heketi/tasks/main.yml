@@ -44,3 +44,4 @@
     path: /etc/heketi/heketi.json
     regexp: 'use_auth'
     line: "use_auth: true"
+  become: true

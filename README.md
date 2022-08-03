@@ -22,6 +22,12 @@ This automation is best executed within the Luna Lab environment using Visual St
     Provide github URL: https://github.com/lschubert/oci-lab-ocne-gluster.git
     Select "Open Folder" and choose the local path of cloned repo
 
+3. In Lab Environement Visual Studio Code
+
+    3.1. Select "Terminal > New Terminal"
+    
+        Hint: Minimize Browser window with Luna Lab
+
 # About this Luna Lab environment
 
 1. Each worker node has an additional 50GB Block device attached for Gluster setup

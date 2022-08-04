@@ -57,7 +57,6 @@ This automation is best executed within the Luna Lab environment using Visual St
     ```
     [oracle@ocne-control ~]$ kubectl proxy
     Starting to serve on 127.0.0.1:8001
-
     ```
 
     1.2. Enable port forwarding for remote connection (only for demo purposes)

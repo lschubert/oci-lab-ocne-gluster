@@ -56,10 +56,17 @@
     state: enabled
   become: true
   loop:
+    - 15001/tcp
+    - 15006/tcp
+    - 15008/tcp
+    - 15009/tcp
     - 15010/tcp
     - 15012/tcp
     - 15014/tcp
+    - 15017/tcp
+    - 15020/tcp
     - 15021/tcp
+    - 15090/tcp
     - 15443/tcp
     - 3000/tcp
     - 9090/tcp

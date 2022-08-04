@@ -114,5 +114,33 @@ istio-ingressgateway   0/2     2            0           58m
 istiod                 2/2     2            2           58m
 prometheus-server      1/1     1            1           58m
 
-[oracle@ocne-operator ~]$ olcnectl module report --environment-name myenvironment                            
-FATAL[04/08/22 11:29:10] Could not initialize secrets manager: open /home/oracle/.olcne/certificates/node.cert: no such file or directory 
+-> istio-egressgateway and istio-ingressgateway are not running
+
+[oracle@ocne-control01 ~]$ kubectl logs -n istio-system istio-egressgateway-555859d8fd-bgnz9
+...
+2022-08-04T14:30:30.966702Z     warning envoy config    StreamAggregatedResources gRPC config stream closed since 749s ago: 14, connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+2022-08-04T14:31:15.130536Z     warning envoy config    StreamAggregatedResources gRPC config stream closed since 793s ago: 14, connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+2022-08-04T14:32:04.309633Z     warning envoy config    StreamAggregatedResources gRPC config stream closed since 842s ago: 14, connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+2022-08-04T14:32:32.587799Z     warn    ca      ca request failed, starting attempt 1 in 104.968012ms
+2022-08-04T14:32:32.693459Z     warn    ca      ca request failed, starting attempt 2 in 209.862201ms
+2022-08-04T14:32:32.903733Z     warn    ca      ca request failed, starting attempt 3 in 372.473859ms
+2022-08-04T14:32:33.277322Z     warn    ca      ca request failed, starting attempt 4 in 807.298401ms
+2022-08-04T14:32:34.085280Z     warn    sds     failed to warm certificate: failed to generate workload certificate: create certificate: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+...
+
+
+[oracle@ocne-control01 ~]$ kubectl logs -n istio-system istio-ingressgateway-fb6d76584-2s7sl
+...
+2022-08-04T14:35:43.686957Z     warning envoy config    StreamAggregatedResources gRPC config stream closed since 1062s ago: 14, connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+2022-08-04T14:36:16.628171Z     warning envoy config    StreamAggregatedResources gRPC config stream closed since 1095s ago: 14, connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+2022-08-04T14:36:48.909073Z     warning envoy config    StreamAggregatedResources gRPC config stream closed since 1127s ago: 14, connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: i/o timeout"
+2022-08-04T14:36:53.017326Z     warn    ca      ca request failed, starting attempt 1 in 98.193019ms
+2022-08-04T14:36:53.115626Z     warn    ca      ca request failed, starting attempt 2 in 183.794579ms
+2022-08-04T14:36:53.300055Z     warn    ca      ca request failed, starting attempt 3 in 428.018137ms
+2022-08-04T14:36:53.728760Z     warn    ca      ca request failed, starting attempt 4 in 730.909369ms
+2022-08-04T14:36:54.460798Z     warn    sds     failed to warm certificate: failed to generate workload certificate: create certificate: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: connect: connection timed out"
+...
+
+## Grafana Dashboard not accessible
+
+following https://docs.oracle.com/en/operating-systems/olcne/1.5/mesh/grafana.html#ip

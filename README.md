@@ -144,3 +144,5 @@ prometheus-server      1/1     1            1           58m
 ## Grafana Dashboard not accessible
 
 following https://docs.oracle.com/en/operating-systems/olcne/1.5/mesh/grafana.html#ip
+
+- Verify if LabEnv has ocne 1.5 pre-installed

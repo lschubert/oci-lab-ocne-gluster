@@ -24,13 +24,24 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 3. In Lab Environement Visual Studio Code
 
-    3.1. Open file ```vars/main.yml``` in Visual Studio Code and modify the values for ```ocne_control_ip```, ```ocne_operator_ip``` and ```ocne_worker_ip``` to match the corresponsing IPs from step 1.1
+    3.1. Select "Terminal > New Terminal"
 
-    3.2. Make sure "oci_executor" variable in ```vars/main.yml``` is set to true 
+    3.2.  In Temrinal Window - gather ip addresses from lab enviroment
+    ```
+    ./get_ips.sh
+    ocne_control_ip: 129.159.255.204
+    ocne_operator_ip: 138.2.174.20
+    ocne_worker_ip: 
+      - 141.147.16.66
+      - 141.147.22.154
+      - 138.2.145.19
+    ``` 
 
-    3.3. Select "Terminal > New Terminal"
+    3.3. Open file ```vars/main.yml``` in Visual Studio Code and modify the values for ```ocne_control_ip```, ```ocne_operator_ip``` and ```ocne_worker_ip``` to match the corresponsing IPs from step 3.2
+
+    3.4. Make sure "oci_executor" variable in ```vars/main.yml``` is set to true 
     
-    3.4. Set Environment variables
+    3.5. In Terminal Window - Set Environment variables
 
     HEKETI_ADMIN_PASS is used to manage the Heketi Topology for Gluster
     ```
@@ -38,7 +49,7 @@ This automation is best executed within the Luna Lab environment using Visual St
     export HEKETI_USER_PASS=<password>
     ```
 
-    3.3. In oci-lab-ocne-gluster folder execute ```./setup.sh```
+    3.6. In oci-lab-ocne-gluster folder execute ```./setup.sh```
 
 # About this Luna Lab environment
 
@@ -99,12 +110,3 @@ prometheus-server      1/1     1            1           58m
 
 [oracle@ocne-operator ~]$ olcnectl module report --environment-name myenvironment                            
 FATAL[04/08/22 11:29:10] Could not initialize secrets manager: open /home/oracle/.olcne/certificates/node.cert: no such file or directory 
-
-## Obtain node IPs
-
-[luna.user@lunabox oci-lab-ocne-gluster]$ oci compute instance list-vnics --compartment-id ${OCI_COMPARTMENT_OCID} | jq -r '.[][] | ."hostname-label" + ":" + ."public-ip"' 
-ocne-operator:130.61.22.38
-ocne-worker02:130.61.143.161
-ocne-worker01:130.61.26.124
-ocne-control01:130.61.106.194
-ocne-worker03:130.61.74.155

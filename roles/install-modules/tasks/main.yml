@@ -1,4 +1,39 @@
 ---
+# tasks for metallb
+- name: Provide metallb-config.yaml 
+  template:
+    src: templates/metallb-config.j2
+    dest: "/home/{{ install_user }}/metallb-config.yaml"
+  become: true
+  become_user: "{{ install_user }}"
+  when: ocne_module_metallb == true
+# common tasks
+- name: "Configure olcnectl completion"
+  lineinfile:
+    path: "/home/{{ install_user }}/.bashrc"
+    line: 'source <(olcnectl completion bash)'
+    create: yes
+  become: true
+  become_user: "{{ install_user }}"
+- name: Create Certificates Directory
+  file:
+    path: "/home/{{ install_user }}/.olcne/certificates"
+    state: directory
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+  become: true 
+- name: Configure Certificates
+  file:
+    path: "/home/{{ install_user }}/.olcne/certificates/{{ item }}"
+    src: "/etc/olcne/configs/certificates/production/{{ item }}"
+    owner: "{{ install_user }}"
+    group: "{{ install_user }}"
+    state: link
+  become: true 
+  loop:
+    - ca.cert
+    - node.cert
+    - node.key
 - name: Backup environment config
   copy:
     src: "/home/{{ install_user }}/myenvironment.yaml"
@@ -80,10 +115,4 @@
 - name: Show installed modules
   debug:
     var: mod_kube_installed
-# tasks for metallb
-- name: Provide metallb-config.yaml 
-  template:
-    src: templates/metallb-config.j2
-    dest: "/home/{{ install_user }}/metallb-config.yaml"
-  become: true
-  become_user: "{{ install_user }}"
+

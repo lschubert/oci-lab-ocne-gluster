@@ -47,7 +47,7 @@
   register: pvc_get
 - name: Show PVCs
   debug:
-    var: pvc_get
+    msg: "{{ pvc_get.stdout }}"
 - name: Create example Deployment using PVC
   shell: |
     cat << EOF | kubectl apply -f -
@@ -95,13 +95,13 @@
   register: deployment_get
 - name: Show Deployment
   debug:
-    var: deployment_get
+    msg: "{{ deployment_get.stdout }}"
 - name: Gather pod mount info
   shell: |
-    kubectl get pod -l run=demo-nginx --no-headers -ocustom-columns==Name:metadata.name | xargs -I{} kubectl exec {} -ti -- mount -t fuse.glusterfs
+    kubectl get pod -l run=demo-nginx --no-headers -ocustom-columns==Name:metadata.name | xargs -I{} kubectl exec {} -ti -- mount -t fuse.glusterfs 2>/dev/null
   become: true
   become_user: "{{ install_user }}"
   register: pod_mount
 - name: Show pod mount info
   debug:
-    var: pod_mount
+    msg: "{{ pod_mount.stdout }}"

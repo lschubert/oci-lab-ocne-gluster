@@ -1,5 +1,6 @@
 #!/bin/bash
 export ANSIBLE_HOST_KEY_CHECKING=False
+export ANSIBLE_STDOUT_CALLBACK=debug
 ansible-playbook setup.yml
 # make sure HEKETI_ADMIN_PASS and HEKETI_USER_PASS are set
 if [[ ! -v HEKETI_ADMIN_PASS ]];

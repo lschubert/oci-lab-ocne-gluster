@@ -44,4 +44,8 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 1. Each worker node has an additional 50GB Block device attached for Gluster setup
 
+2. During setup.sh automation 5 PVCs will be created with 1GB each
+
+3. For validation of proper use an nginx deployment will use one of the PVCs (gluster-pvc-1)
+
 # Developer ToDo's:

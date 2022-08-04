@@ -96,3 +96,12 @@
 - name: Show Deployment
   debug:
     var: deployment_get
+- name: Gather pod mount info
+  shell: |
+    kubectl get pod -l run=demo-nginx --no-headers -ocustom-columns==Name:metadata.name | xargs -I{} kubectl exec {} -ti -- mount -t fuse.glusterfs
+  become: true
+  become_user: "{{ install_user }}"
+  register: pod_mount
+- name: Show pod mount info
+  debug:
+    var: pod_mount

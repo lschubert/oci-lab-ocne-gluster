@@ -6,7 +6,7 @@ Setting up the underlying ocne cluster as pre-requisite is part of the free lab 
 
 This automation is best executed within the Luna Lab environment using Visual Studio Code.
 
-# Pre-Requisites on the local execution machine:
+# Pre-Requisites on execution machine:
 - git client, ansible installed
     - verify with ```git version```and ```ansible --version```
 
@@ -85,5 +85,3 @@ This automation is best executed within the Luna Lab environment using Visual St
     
     Choose Token and paste the token from previous step to log in
 
-
-# Developer ToDo's:

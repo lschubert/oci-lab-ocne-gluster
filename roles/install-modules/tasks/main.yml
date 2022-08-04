@@ -19,6 +19,20 @@
   become: true
   become_user: "{{ install_user }}"
   when: ocne_module_istio == true
+- name: Add Helm, Gluster and MetalLB module to environment config
+  template:
+    src: templates/myenvironment_gluster-metallb.j2
+    dest: "/home/{{ install_user }}/myenvironment.yaml"
+  become: true
+  become_user: "{{ install_user }}"
+  when: ocne_module_metallb == true
+- name: Add Helm, Gluster, MetalLB and Istio module to environment config
+  template:
+    src: templates/myenvironment_gluster-metallb.j2
+    dest: "/home/{{ install_user }}/myenvironment.yaml"
+  become: true
+  become_user: "{{ install_user }}"
+  when: (ocne_module_metallb == true and ocne_module_istio == true)  
 - name: Create modules
   shell: olcnectl module create --config-file ./myenvironment.yaml
   args:
@@ -66,3 +80,10 @@
 - name: Show installed modules
   debug:
     var: mod_kube_installed
+# tasks for metallb
+- name: Provide metallb-config.yaml 
+  template:
+    src: templates/metallb-config.j2
+    dest: "/home/{{ install_user }}/metallb-config.yaml"
+  become: true
+  become_user: "{{ install_user }}"

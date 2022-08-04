@@ -46,3 +46,22 @@
     state: started
     enabled: yes
   become: true
+# tasks for metallb
+- name: Configure the firewall (metallb) - add-port 
+  firewalld:
+    port: "{{ item }}"
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true
+  loop:
+    - 7946/tcp
+    - 7946/udp
+  when: ocne_module_metallb == true
+- name: Restart firewalld
+  systemd:
+      name: firewalld.service
+    state: restarted
+    enabled: yes
+  become: true

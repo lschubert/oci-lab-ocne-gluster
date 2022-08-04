@@ -6,6 +6,8 @@ ocne_worker_ip:
   - 141.147.22.154
   - 138.2.145.19
 
+# ocne_module_metallb: true: enables metallb within the ocne cluster
+ocne_module_metallb: true
 # ocne_module_istio: true: enables istio within the ocne cluster with grafana
 ocne_module_istio: true
 

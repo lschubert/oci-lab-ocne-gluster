@@ -99,3 +99,12 @@ prometheus-server      1/1     1            1           58m
 
 [oracle@ocne-operator ~]$ olcnectl module report --environment-name myenvironment                            
 FATAL[04/08/22 11:29:10] Could not initialize secrets manager: open /home/oracle/.olcne/certificates/node.cert: no such file or directory 
+
+## Obtain node IPs
+
+[luna.user@lunabox oci-lab-ocne-gluster]$ oci compute instance list-vnics --compartment-id ${OCI_COMPARTMENT_OCID} | jq -r '.[][] | ."hostname-label" + ":" + ."public-ip"' 
+ocne-operator:130.61.22.38
+ocne-worker02:130.61.143.161
+ocne-worker01:130.61.26.124
+ocne-control01:130.61.106.194
+ocne-worker03:130.61.74.155

@@ -95,7 +95,7 @@
   register: deployment_get
   retries: 10
   delay: 10
-  until: "'Running' in deployment_get"
+  until: "'Running' in deployment_get.stdout"
 - name: Show Deployment
   debug:
     msg: "{{ deployment_get.stdout }}"

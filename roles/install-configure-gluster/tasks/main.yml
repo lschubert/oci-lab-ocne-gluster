@@ -61,7 +61,7 @@
   when: ocne_module_metallb == true
 - name: Restart firewalld
   systemd:
-      name: firewalld.service
+    name: firewalld.service
     state: restarted
     enabled: yes
   become: true

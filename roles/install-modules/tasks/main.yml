@@ -28,7 +28,7 @@
   when: ocne_module_metallb == true
 - name: Add Helm, Gluster, MetalLB and Istio module to environment config
   template:
-    src: templates/myenvironment_gluster-metallb.j2
+    src: templates/myenvironment_gluster-metallb-istio.j2
     dest: "/home/{{ install_user }}/myenvironment.yaml"
   become: true
   become_user: "{{ install_user }}"

@@ -45,30 +45,3 @@ This automation is best executed within the Luna Lab environment using Visual St
 1. Each worker node has an additional 50GB Block device attached for Gluster setup
 
 # Developer ToDo's:
-
-[oracle@ocne-control01 ~]$ kubectl get pvc -owide
-NAME            STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS     AGE   VOLUMEMODE
-gluster-pvc-0   Pending                                      hyperconverged   12m   Filesystem
-gluster-pvc-1   Pending                                      hyperconverged   12m   Filesystem
-gluster-pvc-2   Pending                                      hyperconverged   12m   Filesystem
-gluster-pvc-3   Pending                                      hyperconverged   12m   Filesystem
-gluster-pvc-4   Pending                                      hyperconverged   12m   Filesystem
-gluster-pvc-5   Pending                                      hyperconverged   12m   Filesystem
-[oracle@ocne-control01 ~]$ kubectl describe pvc gluster-pvc-0 
-Name:          gluster-pvc-0
-Namespace:     default
-StorageClass:  hyperconverged
-Status:        Pending
-Volume:        
-Labels:        <none>
-Annotations:   volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/glusterfs
-               volume.kubernetes.io/storage-provisioner: kubernetes.io/glusterfs
-Finalizers:    [kubernetes.io/pvc-protection]
-Capacity:      
-Access Modes:  
-VolumeMode:    Filesystem
-Used By:       <none>
-Events:
-  Type     Reason              Age                 From                         Message
-  ----     ------              ----                ----                         -------
-  Warning  ProvisioningFailed  89s (x12 over 12m)  persistentvolume-controller  Failed to provision volume with StorageClass "hyperconverged": failed to create volume: failed to create volume: see kube-controller-manager.log for details

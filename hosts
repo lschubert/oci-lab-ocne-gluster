@@ -1,0 +1,8 @@
+[ocne-operator]
+138.2.174.20 ansible_user=opc
+
+[ocne-control]
+129.159.255.204 ansible_user=opc
+
+[ocne-worker]
+['141.147.16.66', '141.147.22.154', '138.2.145.19'] ansible_user=opc

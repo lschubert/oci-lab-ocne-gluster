@@ -1,0 +1,125 @@
+---
+- name: Install the Gluster yum repository configuration
+  dnf:
+    name: oracle-gluster-release-el8
+    state: latest
+  become: true
+- name: Install the Heketi software.
+  dnf:
+    name: "heketi,heketi-client"
+    state: latest
+  become: true
+- name: Configure the firewall - add-source 
+  firewalld:
+    source: 10.0.0.0/24
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true
+- name: Configure the firewall - add-port
+  firewalld:
+    port: 8080/tcp
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true
+- name: Check if SSH authentication key for Heketi exists
+  stat:
+    path: /etc/heketi/heketi_key
+  register: stat_result
+  become: true
+- name: Create the SSH authentication key for Heketi
+  shell: |
+    ssh-keygen -m PEM -t rsa -b 4096 -q -f /etc/heketi/heketi_key -N '' <<<$'n\n'
+  when: not stat_result.stat.exists
+  become: true
+- name: Distribute SSH authentication key for Heketi
+  shell: |
+    cat /etc/heketi/heketi_key.pub | ssh -t -o StrictHostKeyChecking=no {{ item }} 'sudo tee -a /root/.ssh/authorized_keys' > /dev/null 2>&1
+  register: ssh_out
+  become: true
+  become_user: "{{ install_user }}"
+  loop:
+    - ocne-worker01
+    - ocne-worker02
+    - ocne-worker03
+- name: Set Key permissions
+  file: 
+    path: "{{ item }}"
+    owner: heketi
+    group: heketi
+  become: true
+  loop:
+    - /etc/heketi/heketi_key
+    - /etc/heketi/heketi_key.pub
+- name: DEBUG
+  debug:
+    var: ssh_out
+  when: debug_output == true  
+- name: Backup heketi.json
+  copy:
+    src: /etc/heketi/heketi.json 
+    dest: /etc/heketi/heketi.json.bak_{{ ansible_date_time.epoch}}
+    remote_src: yes
+  become: true
+- name: Enable Heketi authentication
+  lineinfile:
+    path: /etc/heketi/heketi.json
+    regexp: 'use_auth'
+    line: '  "use_auth": true,'
+  become: true
+- name: Set HEKETI_ADMIN_PASS
+  shell: |
+    json="$(jq --arg HEKETI_ADMIN_PASS "{{ HEKETI_ADMIN_PASS }}" '.jwt.admin.key = $HEKETI_ADMIN_PASS' /etc/heketi/heketi.json)" && \
+    echo -E "${json}" > /etc/heketi/heketi.json
+  become: true
+- name: Set HEKETI_USER_PASS
+  shell: |
+    json="$(jq --arg HEKETI_USER_PASS "{{ HEKETI_USER_PASS }}" '.jwt.user.key = $HEKETI_USER_PASS' /etc/heketi/heketi.json)" && \
+    echo -E "${json}" > /etc/heketi/heketi.json
+  become: true
+- name: Configure Glusterfs executor
+  shell: |
+    json="$(jq '{{ item.jsonpath }} = "{{ item.value }}"' /etc/heketi/heketi.json)" && \
+    echo -E "${json}" > /etc/heketi/heketi.json
+  become: true
+  loop:
+    - { jsonpath: ".glusterfs.executor", value: "ssh"}  
+    - { jsonpath: ".glusterfs.sshexec.keyfile", value: "/etc/heketi/heketi_key"} 
+    - { jsonpath: ".glusterfs.sshexec.user", value: "root"} 
+    - { jsonpath: ".glusterfs.sshexec.port", value: "22"} 
+    - { jsonpath: ".glusterfs.sshexec.fstab", value: "/etc/fstab"} 
+- name: Enable and start heketi service
+  systemd:
+    name: heketi.service
+    state: restarted
+    enabled: yes
+  become: true
+- name: Validate heketi
+  shell: curl -w "\n" localhost:8080/hello
+  register: heketi_curl
+  failed_when: "'Hello from Heketi' not in heketi_curl.stdout"
+- name: Create Heketi topology config
+  template:
+    src: templates/topology.j2
+    dest: /etc/heketi/topology.json
+  become: true
+- name: Load Heketi topology
+  shell: |
+    heketi-cli --user admin --secret "{{ HEKETI_ADMIN_PASS }}" topology load --json=/etc/heketi/topology.json
+  become_user: "{{ install_user }}"
+  register: heketi_topology
+- name: DEBUG
+  debug:
+    var: heketi_topology
+  when: debug_output == true
+- name: Load Heketi topology
+  shell: |
+    heketi-cli --user admin --secret "{{ HEKETI_ADMIN_PASS }}" node list
+  become_user: "{{ install_user }}"
+  register: heketi_nodes
+- name: Show Heketi nodes
+  debug:
+    var: heketi_nodes

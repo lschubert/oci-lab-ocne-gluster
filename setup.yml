@@ -1,0 +1,31 @@
+---
+- name: Configure executor
+  hosts: localhost
+  vars_files: main.yml
+  roles:
+    - { role: generate-resources }
+- name: Validate ocne setup
+  hosts: ocne-control
+  vars_files: main.yml
+  roles:
+    - { role: precheck-ocne }
+- name: Install and Configure Gluster
+  hosts: ocne-worker
+  vars_files: main.yml
+  roles:
+    - { role: install-configure-gluster }
+- name: Configure Heketi for Gluster
+  hosts: ocne-control
+  vars_files: main.yml
+  roles:
+    - { role: configure-heketi }
+- name: Install the Gluster Container Storage Interface Module
+  hosts: ocne-operator
+  vars_files: main.yml
+  roles:
+    - { role: install-gluster-csi }
+- name: Create Gluster Volumes
+  hosts: ocne-control
+  vars_files: main.yml
+  roles:
+    - { role: create-gluster-volumes }

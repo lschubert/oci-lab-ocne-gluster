@@ -1,0 +1,48 @@
+---
+- name: Install the Gluster yum repository configuration
+  dnf:
+    name: oracle-gluster-release-el8
+    state: latest
+  become: true
+- name: Install the Gluster software.
+  dnf:
+    name: "glusterfs-server,glusterfs-client"
+    state: latest
+  become: true
+- name: Configure the firewall - add-source 
+  firewalld:
+    source: 10.0.0.0/24
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true
+- name: Configure the firewall - add-service 
+  firewalld:
+    service: glusterfs
+    zone: trusted
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: true  
+- name: Enable gluster encryption
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.target }}"
+    remote_src: true 
+  become: true
+  loop:
+    - { src: "/etc/olcne/configs/certificates/production/ca.cert", target: "/etc/ssl/glusterfs.ca" }
+    - { src: "/etc/olcne/configs/certificates/production/node.key", target: "/etc/ssl/glusterfs.key" }
+    - { src: "/etc/olcne/configs/certificates/production/node.cert", target: "/etc/ssl/glusterfs.pem" }
+- name: Enable gluster secure access
+  file:
+    path: /var/lib/glusterd/secure-access
+    state: touch
+  become: true
+- name: Enable and start gluster service
+  systemd:
+    name: glusterd.service
+    state: started
+    enabled: yes
+  become: true

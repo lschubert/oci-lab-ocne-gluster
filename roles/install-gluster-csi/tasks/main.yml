@@ -1,0 +1,61 @@
+---
+- name: Backup environment config
+  copy:
+    src: "/home/{{ install_user }}/myenvironment.yaml"
+    dest: "/home/{{ install_user }}/myenvironment.yaml_{{ ansible_date_time.epoch}}"
+    remote_src: yes
+  become: true
+  become_user: "{{ install_user }}"
+- name: Add Helm and Gluster module to environment config
+  template:
+    src: templates/myenvironment_gluster-csi.j2
+    dest: "/home/{{ install_user }}/myenvironment.yaml"
+  become: true
+  become_user: "{{ install_user }}"
+- name: Create modules
+  shell: olcnectl module create --config-file ./myenvironment.yaml
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_kube_create
+  become: true
+  become_user: "{{ install_user }}"
+- name: DEBUG output
+  debug:
+    var: mod_kube_create
+  when: debug_output == true
+- name: Validate modules
+  shell: olcnectl module validate --config-file myenvironment.yaml
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_kube_validate
+  become: true
+  become_user: "{{ install_user }}"
+- name: DEBUG output
+  debug:
+    var: mod_kube_validate
+  when: debug_output == true
+- name: Make sure validation is successfull
+  fail:
+    msg: Validation of modules failed. {{ mod_kube }}
+  when: "'Validation of module mycluster succeeded.' not in mod_kube_validate.stdout"
+- name: Install modules
+  shell: olcnectl module install --config-file myenvironment.yaml
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_kube_install
+  ignore_errors: true
+  become: true
+  become_user: "{{ install_user }}"
+  delay: 20
+  retries: 5
+  until: mod_kube_install.rc == 0
+- name: Gather installed modules
+  shell: olcnectl module instances --config-file myenvironment.yaml
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_kube_installed
+  become: true
+  become_user: "{{ install_user }}"
+- name: Show installed modules
+  debug:
+    var: mod_kube_installed

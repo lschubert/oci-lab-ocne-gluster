@@ -1,0 +1,14 @@
+---
+ocne_control_ip: 129.159.255.204
+ocne_operator_ip: 138.2.174.20
+ocne_worker_ip: 
+  - 141.147.16.66
+  - 141.147.22.154
+  - 138.2.145.19
+
+# install_user: os user for installing the ocne components
+install_user: oracle
+# oci_executor: true: execute ansible playbook from oci lab environment; false: execute from anywhere according to README.md instructions
+oci_executor: true
+# debug_output: true enables some debug output during setup
+debug_output: true

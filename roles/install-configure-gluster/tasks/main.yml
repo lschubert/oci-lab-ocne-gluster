@@ -60,6 +60,7 @@
     - 15012/tcp
     - 15014/tcp
     - 15021/tcp
+    - 15443/tcp
     - 3000/tcp
     - 9090/tcp
   when: ocne_module_istio == true

@@ -85,3 +85,17 @@ This automation is best executed within the Luna Lab environment using Visual St
     
     Choose Token and paste the token from previous step to log in
 
+# Development info
+
+## Istio Deployment
+
+[oracle@ocne-control01 ~]$ kubectl get deployment -n istio-system
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+grafana                1/1     1            1           58m
+istio-egressgateway    0/2     2            0           58m
+istio-ingressgateway   0/2     2            0           58m
+istiod                 2/2     2            2           58m
+prometheus-server      1/1     1            1           58m
+
+[oracle@ocne-operator ~]$ olcnectl module report --environment-name myenvironment                            
+FATAL[04/08/22 11:29:10] Could not initialize secrets manager: open /home/oracle/.olcne/certificates/node.cert: no such file or directory 

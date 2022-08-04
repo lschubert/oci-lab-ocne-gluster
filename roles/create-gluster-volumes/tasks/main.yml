@@ -4,6 +4,7 @@
     kubectl delete secret heketi-admin
   become: true
   become_user: "{{ install_user }}"
+  ignore_errors: true
   register: delete_secret
 - name: DEBUG
   debug:

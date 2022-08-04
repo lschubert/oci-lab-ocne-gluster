@@ -40,6 +40,8 @@ This automation is best executed within the Luna Lab environment using Visual St
     3.3. Open file ```vars/main.yml``` in Visual Studio Code and modify the values for ```ocne_control_ip```, ```ocne_operator_ip``` and ```ocne_worker_ip``` to match the corresponsing IPs from step 3.2
 
     3.4. Make sure "oci_executor" variable in ```vars/main.yml``` is set to true 
+
+    Save the file.
     
     3.5. In Terminal Window - Set Environment variables
 
@@ -49,7 +51,11 @@ This automation is best executed within the Luna Lab environment using Visual St
     export HEKETI_USER_PASS=<password>
     ```
 
-    3.6. In oci-lab-ocne-gluster folder execute ```./setup.sh```
+    3.6. Wait until Lab resoources are fully deployed. This can be checked in Luna Lab Web Site under Resources Tab.
+
+    The provosioning process is complete once IP Adresses for VMs are displayed under Resources Tab.
+    
+    3.7. In oci-lab-ocne-gluster folder execute ```./setup.sh```
 
 # About this Luna Lab environment
 

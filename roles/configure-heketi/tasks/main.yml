@@ -94,7 +94,7 @@
 - name: Enable and start heketi service
   systemd:
     name: heketi.service
-    state: started
+    state: restarted
     enabled: yes
   become: true
 - name: Validate heketi

@@ -1,4 +1,20 @@
 ---
+- name: Remove default secret for heketi
+  shell: |
+    kubectl delete secret heketi-admin
+  become: true
+  become_user: "{{ install_user }}"
+  register: delete_secret
+- name: DEBUG
+  debug:
+    var: delete_secret
+  when: debug_output == true
+- name: Create secret for heketi
+  shell: |
+    kubectl create secret generic heketi-admin-secret --type=kubernetes.io/glusterfs --from-literal=key={{ HEKETI_ADMIN_PASS }}
+  become: true
+  become_user: "{{ install_user }}"
+  register: delete_secret
 - name: Create PVCs
   shell: |
     for x in {0..5}; do

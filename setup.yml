@@ -23,7 +23,7 @@
   hosts: ocne-operator
   vars_files: main.yml
   roles:
-    - { role: install-gluster-csi }
+    - { role: install-modules }
 - name: Create Gluster Volumes
   hosts: ocne-control
   vars_files: main.yml

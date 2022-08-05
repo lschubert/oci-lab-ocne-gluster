@@ -8,7 +8,7 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 # Pre-Requisites on execution machine:
 - git client, ansible installed
-    - verify with ```git version```and ```ansible --version```
+    - verify with ```git version``` and ```ansible --version```
 
 # Instructions to setup
 

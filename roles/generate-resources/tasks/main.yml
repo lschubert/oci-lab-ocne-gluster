@@ -18,3 +18,10 @@
   loop:
     - { template: "templates/hosts.j2", target: "./hosts" }
     - { template: "templates/sshconfig.j2", target: "~/.ssh/config"}
+- name: setting environment
+  lineinfile:
+    path: ~/.bashrc
+    line: "{{ item }}"
+  loop:
+    - "export LC_ALL=C.UTF-8"
+    - "export LANG=C.UTF-8"

@@ -69,6 +69,18 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 3. For validation of proper use an nginx deployment will use one of the PVCs (gluster-pvc-1)
 
+4. You can log in to each of the nodes from Visual Studio Code Terminal using
+
+    ```ssh oracle@ocne-control```
+
+    ```ssh oracle@ocne-operator```
+
+    ```ssh oracle@ocne-worker-1```
+
+    ```ssh oracle@ocne-worker-2```
+
+    ```ssh oracle@ocne-worker-3```
+
 # Use Cases
 
 1. Access Kubernetes Dashboard

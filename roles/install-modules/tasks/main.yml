@@ -43,7 +43,7 @@
   become_user: "{{ install_user }}"
 - name: Add Helm and Gluster module to environment config
   template:
-    src: templates/myenvironment_gluster-istio.j2
+    src: templates/myenvironment_gluster-csi.j2
     dest: "/home/{{ install_user }}/myenvironment.yaml"
   become: true
   become_user: "{{ install_user }}"
@@ -136,6 +136,18 @@
   delay: 20
   retries: 5
   until: mod_istio_uninstall.rc == 0
+- name: Uninstall module dependencies
+  shell: olcnectl module uninstall --environment-name myenvironment
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_dep_uninstall
+  ignore_errors: true
+  become: true
+  become_user: "{{ install_user }}"
+  when: ocne_module_dep == false
+  delay: 20
+  retries: 5
+  until: mod_dep_uninstall.rc == 0
 - name: Show installed modules
   debug:
     var: mod_kube_installed

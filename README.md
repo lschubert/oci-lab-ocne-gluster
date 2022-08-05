@@ -6,7 +6,7 @@ Setting up the underlying ocne cluster as pre-requisite is part of the free lab 
 
 This automation is best executed within the Luna Lab environment using Visual Studio Code.
 
-# Pre-Requisites on execution machine:
+# Pre-Requisites on execution machine
 - git client, ansible installed
     - verify with ```git version``` and ```ansible --version```
 
@@ -39,7 +39,7 @@ This automation is best executed within the Luna Lab environment using Visual St
 
     3.3. Open file ```vars/main.yml``` in Visual Studio Code and modify the values for ```ocne_control_ip```, ```ocne_operator_ip``` and ```ocne_worker_ip``` to match the corresponsing IPs from step 3.2
 
-    You can copy the output from ```./get_ips.sh``` and replace the corresponding section at the beginning of ```vars/main.yml```
+    You can copy the output from ```./get_ips.sh``` and replace the corresponding section at the beginning of ```vars/main.yml```. 
 
     3.4. Make sure "oci_executor" variable in ```vars/main.yml``` is set to true 
 
@@ -123,6 +123,7 @@ This automation is best executed within the Luna Lab environment using Visual St
 The following features are under development and in experimental state:
 
 * istio module configuration
+* metallb module configuration
 
 ## Contribution 
 

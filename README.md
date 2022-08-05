@@ -114,7 +114,7 @@ The following features are under development and in experimental state:
 
 ## Contribution 
 
-I am happy and open to contributors. If you feel something is going wrong with this lab automation or you have an idea to add as use case, feel free to create a feature branch, implement the stuff you want to contribute and create a pull request.
+I am happy and open to contributors. If you feel something is going wrong with this lab automation or you have an idea to add as use case, feel free to create a feature branch from master branch, implement and commit the stuff you want to contribute to that feature branch and create a pull request towards master branch.
 
 While implementing this code I am applying the following principles which I would encourage to be adopted by contributors as well
 

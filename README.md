@@ -39,6 +39,8 @@ This automation is best executed within the Luna Lab environment using Visual St
 
     3.3. Open file ```vars/main.yml``` in Visual Studio Code and modify the values for ```ocne_control_ip```, ```ocne_operator_ip``` and ```ocne_worker_ip``` to match the corresponsing IPs from step 3.2
 
+    You can copy the output from ```./get_ips.sh``` and replace the corresponding section at the beginning of ```vars/main.yml```
+
     3.4. Make sure "oci_executor" variable in ```vars/main.yml``` is set to true 
 
     Save the file.
@@ -56,6 +58,8 @@ This automation is best executed within the Luna Lab environment using Visual St
     The provosioning process is complete once IP Adresses for VMs are displayed under Resources Tab.
     
     3.7. In oci-lab-ocne-gluster folder execute ```./setup.sh```
+
+    The automation triggered by ```./setup.sh``` is expected to be idempotent. You can change variables or the automation code itself and re-run the ```./setup.sh``` to reconfigure the setup (e.g. to enable or disable OCNE modules)
 
 # About this Luna Lab environment
 
@@ -104,6 +108,21 @@ This automation is best executed within the Luna Lab environment using Visual St
 
 # Development info
 
+The following features are under development and in experimental state:
+
+* istio module configuration
+
+## Contribution 
+
+I am happy and open to contributors. If you feel something is going wrong with this lab automation or you have an idea to add as use case, feel free to create a feature branch, implement the stuff you want to contribute and create a pull request.
+
+While implementing this code I am applying the following principles which I would encourage to be adopted by contributors as well
+
+* Code the automation with idempotency in mind. Automation must be executable again and again with delivering the expected outcome.
+* Ease of use. Using the code should be as simple as possible with least necessary steps to describe but yet flexible to configure where needed. 
+* There is no perfect code. Just do it the right way
+* If the usage pattern changes, do not forget to update the documentation (this README)
+
 ## Istio Deployment
 
 [oracle@ocne-control01 ~]$ kubectl get deployment -n istio-system
@@ -141,7 +160,7 @@ prometheus-server      1/1     1            1           58m
 2022-08-04T14:36:54.460798Z     warn    sds     failed to warm certificate: failed to generate workload certificate: create certificate: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp 10.109.4.175:15012: connect: connection timed out"
 ...
 
-## Grafana Dashboard not accessible
+### Grafana Dashboard not accessible
 
 following https://docs.oracle.com/en/operating-systems/olcne/1.5/mesh/grafana.html#ip
 

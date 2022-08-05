@@ -112,6 +112,30 @@
   register: mod_kube_installed
   become: true
   become_user: "{{ install_user }}"
+- name: Uninstall module metallb
+  shell: olcnectl module uninstall --environment-name myenvironment --name mymetallb
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_metallb_uninstall
+  ignore_errors: true
+  become: true
+  become_user: "{{ install_user }}"
+  when: ocne_module_metallb == false
+  delay: 20
+  retries: 5
+  until: mod_metallb_uninstall.rc == 0
+- name: Uninstall module istio
+  shell: olcnectl module uninstall --environment-name myenvironment --name myistio
+  args:
+    chdir: "/home/{{ install_user }}"
+  register: mod_istio_uninstall
+  ignore_errors: true
+  become: true
+  become_user: "{{ install_user }}"
+  when: ocne_module_istio == false
+  delay: 20
+  retries: 5
+  until: mod_istio_uninstall.rc == 0
 - name: Show installed modules
   debug:
     var: mod_kube_installed
